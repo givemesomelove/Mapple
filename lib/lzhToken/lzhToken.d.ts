@@ -7,7 +7,7 @@ export interface LzhToken {
      * @param secret - 用于生成和验证 JWT 的密钥。
      * @param getUser - 一个异步函数，根据用户 ID 获取用户信息。
      */
-    config(secret: String, getUser: function): void;
+    config(secret: String, getUser: Function): void;
 
     /**
      * 根据用户 ID 创建一个 JWT 令牌。
