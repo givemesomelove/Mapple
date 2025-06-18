@@ -17,9 +17,15 @@ global.db = db;
     tokenUtil.config('lzhTokenSecret', getUser);
 
     const server = new Express();
-    /// 添加路由
+    /// 添加用户路由
     const userRouter = require('./src/router/user');
     server.addRouter('user', userRouter);
+
+    /// 添加房间socket
+    const roomSpace = server.addWs('room');
+    const roomWS = require('./src/ws/room');
+    roomWS.setSpace(roomSpace);
+
 
     server.listen(3000);
 })();
