@@ -19,8 +19,8 @@ router.post('/login', asyncWrap(async(req) => {
 
 /// 获取用户信息
 router.get('/userInfo', tokenUtil.httpAuth , asyncWrap(async(req) => {
-    const { userId } = req.body;
-    const user = await userService.getUserByUserId(userId);
+    const { username } = req.query;
+    const user = await userService.getUserByUsername(username);
     return user;
 }))
 
