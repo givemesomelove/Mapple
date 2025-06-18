@@ -1,6 +1,7 @@
 const Express = require("./lib/lzhExpress/lzhExpress");
 const db = require("./lib/lzhDb/lzhDb");
 const tokenUtil = require('./lib/lzhToken/lzhToken');
+const redis = require('./lib/lzhRedis/lzhRedis')
 
 /// 全局
 global.myLog = require("./lib/lzhUtil/log");
@@ -11,6 +12,9 @@ global.db = db;
     const UserDb = require("./src/db/user");
     db.setModels([UserDb]);
     await db.connect('mongodb://localhost:27017', 'mapple');
+
+    /// redis服务器
+    await redis.connect('redis://localhost:6379');
 
     /// 鉴权初始化
     const getUser = db.collections.user.getUserByUserId;

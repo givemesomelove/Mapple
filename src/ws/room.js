@@ -3,7 +3,7 @@ class RoomWS extends LzhWS {
 
     initRouterMap() {
         /// 创建房间
-        this.on('create', async (socket, data) => {
+        this.on('createRoom', async (socket, data) => {
             console.log('create room', data);
         })
     }

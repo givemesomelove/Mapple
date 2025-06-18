@@ -20,6 +20,15 @@ export interface LzhWSClient {
      * 在实际使用中，开发者应重写此方法，在其中注册具体的路由处理器到 this.routers 中。
      */
     initRouterMap(): void;
+
+    /**
+     * 向服务器发送消息。
+     * 该方法用于通过 WebSocket 连接向服务器发送指定路径和数据的消息，可选择性地传入一个回调函数。
+     * @param path - 消息的目标路径，使用原生 JavaScript 的 String 类型，用于标识消息的类型或目的地。
+     * @param data - 要发送的数据对象，包含具体的消息内容。
+     * @param block - 可选的回调函数或其他类型的值，用于处理服务器的响应或执行额外逻辑。
+     */
+    sendMessage(path: String, data: object, block: any): void;
 }
 
 module.exports = LzhWSClient;
