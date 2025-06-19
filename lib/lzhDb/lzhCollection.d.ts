@@ -1,66 +1,52 @@
+import { ObjectId } from "mongodb";
+
 export interface LzhCollection {
     /**
-     * 将数据库 ID 转换为字符串。
-     *
-     * @param dbId - 数据库中的 ID。
-     * @returns 转换后的字符串形式的 ID。
+     * 初始化数据库集合的索引（抽象方法，具体实现由子类完成）
+     * @returns {Promise<void>} 索引初始化完成的空值承诺
      */
-    dbId2Str(dbId: any): String;
+    initIndex(): Promise<void>;
 
     /**
-     * 将字符串形式的 ID 转换为数据库 ID。
-     *
-     * @param id - 字符串形式的 ID。
-     * @returns 转换后的数据库 ID。
+     * 将 MongoDB 的 ObjectId 对象转换为十六进制字符串
+     * @param {ObjectId} id - 待转换的 ObjectId 对象（MongoDB 文档的默认 ID 类型）
+     * @returns {String} 转换后的十六进制字符串
      */
-    str2DbId(id: String): any;
+    id2Str(id: ObjectId): String;
 
     /**
-     * 添加一个对象到数据库。
-     *
-     * @param obj - 要添加的对象。
-     * @returns 一个 Promise，解析为添加成功后的对象 ID（字符串形式）。
+     * 将十六进制字符串转换为 MongoDB 的 ObjectId 对象
+     * @param {String} str - 待转换的十六进制字符串（需符合 ObjectId 格式）
+     * @returns {ObjectId} 转换后的 ObjectId 对象
+     */
+    str2Id(str: String): ObjectId;
+
+    /**
+     * 向集合中添加新对象（自动补充 createAt/updateAt 时间戳）
+     * @param {Object} obj - 待添加的对象数据
+     * @returns {Promise<String>} 插入成功后返回的文档 ID 字符串
      */
     addObj(obj: Object): Promise<String>;
 
     /**
-     * 根据 ID 删除数据库中的对象。
-     *
-     * @param id - 要删除的对象的 ID（字符串形式）。
-     * @returns 一个 Promise，解析为删除成功后的对象 ID（字符串形式）。
+     * 根据 ID 删除集合中的对象
+     * @param {String} id - 待删除对象的 ID 字符串
+     * @returns {Promise<String>} 被删除对象的 ID 字符串
      */
-    remove(id: String): Promise<String>;
+    removeObj(id: String): Promise<String>;
 
     /**
-     * 根据 ID 更新数据库中的对象。
-     *
-     * @param id - 要更新的对象的 ID（字符串形式）。
-     * @param obj - 更新后的对象数据。
-     * @returns 一个 Promise，解析为更新成功后的对象 ID（字符串形式）。
+     * 根据 ID 更新集合中的对象（自动更新 updateAt 时间戳）
+     * @param {String} id - 待更新对象的 ID 字符串
+     * @param {Object} obj - 用于更新的对象数据（不包含 _id）
+     * @returns {Promise<String>} 被更新对象的 ID 字符串
      */
-    update(id: String, obj: Object): Promise<String>;
+    updateObj(id: String, obj: Object): Promise<String>;
 
     /**
-     * 根据 ID 获取数据库中的对象。
-     *
-     * @param id - 要获取的对象的 ID（字符串形式）。
-     * @returns 一个 Promise，解析为获取到的对象。
+     * 根据 ID 查询集合中的对象（自动将 _id 转换为字符串格式）
+     * @param {String} id - 待查询对象的 ID 字符串
+     * @returns {Promise<Object>} 查询到的对象数据（包含字符串格式的 _id）
      */
     getObjById(id: String): Promise<Object>;
-
-    /**
-     * 根据条件获取数据库中的单个对象。
-     *
-     * @param obj - 查询条件对象。
-     * @returns 一个 Promise，解析为获取到的对象。
-     */
-    getObj(obj: Object): Promise<Object>;
-
-    /**
-     * 根据条件批量获取数据库中的对象。
-     *
-     * @param obj - 查询条件对象。
-     * @returns 一个 Promise，解析为获取到的对象数组。
-     */
-    getBatchObj(obj: Object): Promise<Array<Object>>;
 }
