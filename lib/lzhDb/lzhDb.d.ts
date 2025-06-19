@@ -1,3 +1,4 @@
+import { LzhCollection } from "./lzhCollection";     
 export interface LzhDb {
     /**
      * 配置数据库模型，连接后会初始化。
@@ -6,12 +7,13 @@ export interface LzhDb {
      * 每个模型应该是一个对象，包含模型的定义和配置。
      * @returns 一个 Promise，表示初始化操作完成。
      */
-    setModels(models: Array<any>): void;
+    setModels(models: Array<LzhCollection>): void;
 
     /**
      * 连接到数据库。
      *
      * @param url - 数据库连接字符串，用于指定数据库的地址和配置。
+     * @param dbname - 数据库名称，用于指定要连接的数据库。
      * @returns 一个 Promise，表示连接操作完成。
      */
     connect(url: String, dbname: String): Promise<void>;
